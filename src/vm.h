@@ -4,7 +4,7 @@
 class VM
 {
 public:
-VM(int code[], int stackSize, int dataSize);
+VM(int *code, int codeSize, int stackSize, int dataSize);
 bool execute();
 ~VM();
 //
