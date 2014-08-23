@@ -39,6 +39,7 @@ bool VM::execute()
             case OPC_ICONST:
             {
                 int operand = m_code[m_ip++]; 
+                cout << OPCODE_toString(OPC_ICONST) << " " << operand << "\n";
                 m_stack[m_sp++] = operand;
                 break;
             }

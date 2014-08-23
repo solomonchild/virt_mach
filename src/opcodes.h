@@ -4,8 +4,10 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <iostream>
+using std::cout;
 
-std::vector<std::string> split(std::string str, char delim)
+inline std::vector<std::string> split(std::string str, char delim)
 {
 
     std::vector<std::string> to_ret;
@@ -13,8 +15,11 @@ std::vector<std::string> split(std::string str, char delim)
     auto prev_it = it;
     for(; it < str.end(); it++)
     {
-        prev_it = it;
-        to_ret.push_back(std::string(prev_it, it));
+        if(*it == delim)
+        {
+            to_ret.push_back(std::string(prev_it, it));
+            prev_it = it;
+        }
     }
     return to_ret;
 }
@@ -23,8 +28,8 @@ std::vector<std::string> split(std::string str, char delim)
 enum name {\
 __VA_ARGS__\
 };\
-std::vector<std::string> name##Map = split(#__VA_ARGS__, ',');\
-const char* name##_toString(unsigned val) {\
+static std::vector<std::string> name##Map = split(#__VA_ARGS__, ',');\
+inline const char* name##_toString(unsigned val) {\
     if(val >= 0 && val < (int) name##Map.size())\
         return name##Map[val].c_str();\
     else return NULL;\
