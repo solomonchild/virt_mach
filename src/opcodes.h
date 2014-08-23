@@ -5,11 +5,14 @@ enum OPCODES
 {
     ICONST,
     IADD,
+    ISUB,
     PRINT,
-    HALT
+    HALT,
+    JZ,
+    JNZ,
+    ISTORE,
+    ILOAD
 };
-
-
 
 
 #endif //_OPCODES_H_

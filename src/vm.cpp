@@ -25,9 +25,10 @@ VM::~VM()
 	delete(m_data);
 }
 
+using std::cout;
 bool VM::execute()
 {
-	std::cout << "Executing" <<"\n";
+	cout << "Executing" <<"\n";
 	while(m_ip < m_codeSize)
 	{
 		int opcode = m_code[m_ip++];
@@ -44,7 +45,7 @@ bool VM::execute()
             case PRINT:
             {
                 int val = m_stack[--m_sp];
-                std::cout << val <<"\n";
+                cout << val <<"\n";
                 break;
             }
             case IADD:
@@ -53,6 +54,42 @@ bool VM::execute()
                 int val2 = m_stack[--m_sp];
                 int res = val1 + val2;
                 m_stack[m_sp++] = res;
+                break;
+            }
+            case ISUB:
+            {
+                int val1 = m_stack[--m_sp];
+                int val2 = m_stack[--m_sp];
+                int res = val1 - val2;
+                m_stack[m_sp++] = res;
+                break;
+                
+            }
+            case JNZ:
+            {
+                int val = m_stack[--m_sp];
+                if(val != 0)
+                    m_ip = m_code[m_ip];
+                break;
+            }
+            case JZ:
+            {
+                int val = m_stack[--m_sp];
+                if(val == 0)
+                    m_ip = m_code[m_ip];
+                break;
+            }
+            case ISTORE:
+            {
+                int addr = m_code[m_ip++]; 
+                int val = m_stack[--m_sp];
+                m_data[addr] = val;
+                break;
+            }
+            case ILOAD:
+            {
+                int addr = m_code[m_ip++]; 
+                m_stack[m_sp++] = m_data[addr];
                 break;
             }
 		}
