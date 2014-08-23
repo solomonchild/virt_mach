@@ -4,7 +4,7 @@ GCC:=g++
 LN:=g++
 AR:=ar
 
-CFLAGS:= -Iinclude -Isrc -MMD -Wall
+CFLAGS:= -Iinclude -Isrc -MMD -Wall --std=c++0x
 LDFLAGS:=
 
 SOURCE:=$(wildcard src/*.cpp)

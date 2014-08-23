@@ -3,7 +3,7 @@ EXE:=$(NAME).exe
 GCC:=g++
 LN:=g++
 
-CFLAGS:= -Iinclude -Isrc -MMD -Wall
+CFLAGS:= -Iinclude -Isrc -MMD -Wall --std=c++0x
 LDFLAGS:= -Lbin/ 
 LIBS:= -lsvm
 

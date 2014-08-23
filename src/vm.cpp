@@ -34,21 +34,21 @@ bool VM::execute()
 		int opcode = m_code[m_ip++];
 		switch(opcode)
 		{
-			case HALT:
+			case OPC_HALT:
 				break;
-            case ICONST:
+            case OPC_ICONST:
             {
                 int operand = m_code[m_ip++]; 
                 m_stack[m_sp++] = operand;
                 break;
             }
-            case PRINT:
+            case OPC_PRINT:
             {
                 int val = m_stack[--m_sp];
                 cout << val <<"\n";
                 break;
             }
-            case IADD:
+            case OPC_IADD:
             {
                 int val1 = m_stack[--m_sp];
                 int val2 = m_stack[--m_sp];
@@ -56,7 +56,7 @@ bool VM::execute()
                 m_stack[m_sp++] = res;
                 break;
             }
-            case ISUB:
+            case OPC_ISUB:
             {
                 int val1 = m_stack[--m_sp];
                 int val2 = m_stack[--m_sp];
@@ -65,28 +65,28 @@ bool VM::execute()
                 break;
                 
             }
-            case JNZ:
+            case OPC_JNZ:
             {
                 int val = m_stack[--m_sp];
                 if(val != 0)
                     m_ip = m_code[m_ip];
                 break;
             }
-            case JZ:
+            case OPC_JZ:
             {
                 int val = m_stack[--m_sp];
                 if(val == 0)
                     m_ip = m_code[m_ip];
                 break;
             }
-            case ISTORE:
+            case OPC_ISTORE:
             {
                 int addr = m_code[m_ip++]; 
                 int val = m_stack[--m_sp];
                 m_data[addr] = val;
                 break;
             }
-            case ILOAD:
+            case OPC_ILOAD:
             {
                 int addr = m_code[m_ip++]; 
                 m_stack[m_sp++] = m_data[addr];
