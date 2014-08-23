@@ -1,0 +1,25 @@
+NAME:=svm_test
+EXE:=$(NAME).exe
+GCC:=g++
+LN:=g++
+
+CFLAGS:= -Iinclude -Isrc -MMD -Wall
+LDFLAGS:= -Lbin/ 
+LIBS:= -lsvm
+
+SOURCE:=$(wildcard test/*.cpp)
+OBJS:=$(patsubst %.cpp, obj/%.o, $(SOURCE))
+
+bin/$(EXE):$(OBJS) 
+	$(LN) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
+
+all:bin/$(EXE)
+
+obj/%.o:%.cpp
+	mkdir -p $(dir $@)
+	$(GCC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -rf obj/
+
+-include ${OBJS:.o=.d}

@@ -1,0 +1,26 @@
+NAME:=libsvm
+LIB:=$(NAME).a
+GCC:=g++
+LN:=g++
+AR:=ar
+
+CFLAGS:= -Iinclude -Isrc -MMD -Wall
+LDFLAGS:=
+
+SOURCE:=$(wildcard src/*.cpp)
+OBJS:=$(patsubst %.cpp, obj/%.o, $(SOURCE))
+
+bin/$(LIB):$(OBJS) 
+	mkdir -p bin/
+	$(AR) -q $@ $(OBJS)  
+
+all:bin/$(LIB)
+
+obj/%.o:%.cpp
+	mkdir -p $(dir $@)
+	$(GCC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -rf obj/
+
+-include ${OBJS:.o=.d}
