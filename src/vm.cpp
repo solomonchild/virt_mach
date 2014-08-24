@@ -28,13 +28,14 @@ VM::~VM()
 using std::cout;
 bool VM::execute()
 {
-	cout << "Executing" <<"\n";
+	cout << "VM started" <<"\n";
 	while(m_ip < m_codeSize)
 	{
 		int opcode = m_code[m_ip++];
 		switch(opcode)
 		{
 			case OPC_HALT:
+                cout << OPCODE_toString(OPC_HALT) << "\n";
 				break;
             case OPC_ICONST:
             {
@@ -45,12 +46,14 @@ bool VM::execute()
             }
             case OPC_PRINT:
             {
+                cout << OPCODE_toString(OPC_PRINT) << "\n";
                 int val = m_stack[--m_sp];
                 cout << val <<"\n";
                 break;
             }
             case OPC_IADD:
             {
+                cout << OPCODE_toString(OPC_IADD) << "\n";
                 int val1 = m_stack[--m_sp];
                 int val2 = m_stack[--m_sp];
                 int res = val1 + val2;
@@ -59,6 +62,7 @@ bool VM::execute()
             }
             case OPC_ISUB:
             {
+                cout << OPCODE_toString(OPC_ISUB) << "\n";
                 int val1 = m_stack[--m_sp];
                 int val2 = m_stack[--m_sp];
                 int res = val1 - val2;
@@ -68,6 +72,7 @@ bool VM::execute()
             }
             case OPC_JNZ:
             {
+                cout << OPCODE_toString(OPC_JNZ) << "\n";
                 int val = m_stack[--m_sp];
                 if(val != 0)
                     m_ip = m_code[m_ip];
@@ -75,6 +80,7 @@ bool VM::execute()
             }
             case OPC_JZ:
             {
+                cout << OPCODE_toString(OPC_JZ) << "\n";
                 int val = m_stack[--m_sp];
                 if(val == 0)
                     m_ip = m_code[m_ip];
@@ -83,6 +89,7 @@ bool VM::execute()
             case OPC_ISTORE:
             {
                 int addr = m_code[m_ip++]; 
+                cout << OPCODE_toString(OPC_ISTORE) << " " << addr << "\n";
                 int val = m_stack[--m_sp];
                 m_data[addr] = val;
                 break;
@@ -90,6 +97,7 @@ bool VM::execute()
             case OPC_ILOAD:
             {
                 int addr = m_code[m_ip++]; 
+                cout << OPCODE_toString(OPC_ILOAD) << " " << addr << "\n";
                 m_stack[m_sp++] = m_data[addr];
                 break;
             }

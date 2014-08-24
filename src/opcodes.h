@@ -7,33 +7,15 @@
 #include <iostream>
 using std::cout;
 
-inline std::vector<std::string> split(std::string str, char delim)
-{
-
-    std::vector<std::string> to_ret;
-    auto it = str.begin();
-    auto prev_it = it;
-    for(; it < str.end(); it++)
-    {
-        if(*it == delim)
-        {
-            to_ret.push_back(std::string(prev_it, it));
-            prev_it = it;
-        }
-    }
-    return to_ret;
-}
+std::vector<std::string> split(std::string str, char delim);
 
 #define MAKE_STR_ENUM(name, ...) \
 enum name {\
 __VA_ARGS__\
+,name##_END,\
 };\
-static std::vector<std::string> name##Map = split(#__VA_ARGS__, ',');\
-inline const char* name##_toString(unsigned val) {\
-    if(val >= 0 && val < (int) name##Map.size())\
-        return name##Map[val].c_str();\
-    else return NULL;\
-}\
+static const char *name##_STRING = #__VA_ARGS__; \
+extern const char* name##_toString(unsigned val);
 
 MAKE_STR_ENUM(OPCODE,
     OPC_ICONST,
