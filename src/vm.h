@@ -6,6 +6,7 @@ class VM
 public:
     VM(int *code, int codeSize, int stackSize, int dataSize);
     bool execute();
+    void trace(int opcode, int params);
     ~VM();
 protected:
     int m_stackSize;

@@ -1,10 +1,13 @@
 #include "vm.h"
-#include "opcodes.h"
 
 #include <iostream>
 
-#define DECODE 
+#include "opcodes.h"
+
+
 #define lenof(x) sizeof(x)/sizeof(x[0])
+
+using std::cout;
 
 VM::VM(int *code, int codeSize, int stackSize, int dataSize)
 : m_stackSize(stackSize),
@@ -25,7 +28,15 @@ VM::~VM()
 	delete(m_data);
 }
 
-using std::cout;
+
+void VM::trace(int opcode, int params = 0)
+{
+    cout << "[" << m_ip - 1 << "]: " << OPCODE_toString(opcode);
+    for(int i = 0; i < params; i++)
+        cout << " " << m_code[m_ip + i] << " ";
+    cout << "\n";
+}
+
 bool VM::execute()
 {
 	cout << "VM started" <<"\n";
@@ -35,25 +46,25 @@ bool VM::execute()
 		switch(opcode)
 		{
 			case OPC_HALT:
-                cout << OPCODE_toString(OPC_HALT) << "\n";
+                trace(OPC_HALT);
 				break;
             case OPC_ICONST:
             {
+                trace(OPC_ICONST, 1);
                 int operand = m_code[m_ip++]; 
-                cout << OPCODE_toString(OPC_ICONST) << " " << operand << "\n";
                 m_stack[m_sp++] = operand;
                 break;
             }
             case OPC_PRINT:
             {
-                cout << OPCODE_toString(OPC_PRINT) << "\n";
+                trace(OPC_PRINT);
                 int val = m_stack[--m_sp];
                 cout << val <<"\n";
                 break;
             }
             case OPC_IADD:
             {
-                cout << OPCODE_toString(OPC_IADD) << "\n";
+                trace(OPC_IADD);
                 int val1 = m_stack[--m_sp];
                 int val2 = m_stack[--m_sp];
                 int res = val1 + val2;
@@ -62,7 +73,7 @@ bool VM::execute()
             }
             case OPC_ISUB:
             {
-                cout << OPCODE_toString(OPC_ISUB) << "\n";
+                trace(OPC_ISUB);
                 int val1 = m_stack[--m_sp];
                 int val2 = m_stack[--m_sp];
                 int res = val1 - val2;
@@ -72,7 +83,7 @@ bool VM::execute()
             }
             case OPC_JNZ:
             {
-                cout << OPCODE_toString(OPC_JNZ) << "\n";
+                trace(OPC_JNZ);
                 int val = m_stack[--m_sp];
                 if(val != 0)
                     m_ip = m_code[m_ip];
@@ -80,7 +91,7 @@ bool VM::execute()
             }
             case OPC_JZ:
             {
-                cout << OPCODE_toString(OPC_JZ) << "\n";
+                trace(OPC_JZ);
                 int val = m_stack[--m_sp];
                 if(val == 0)
                     m_ip = m_code[m_ip];
@@ -88,16 +99,16 @@ bool VM::execute()
             }
             case OPC_ISTORE:
             {
+                trace(OPC_ISTORE, 1);
                 int addr = m_code[m_ip++]; 
-                cout << OPCODE_toString(OPC_ISTORE) << " " << addr << "\n";
                 int val = m_stack[--m_sp];
                 m_data[addr] = val;
                 break;
             }
             case OPC_ILOAD:
             {
+                trace(OPC_ILOAD, 1);
                 int addr = m_code[m_ip++]; 
-                cout << OPCODE_toString(OPC_ILOAD) << " " << addr << "\n";
                 m_stack[m_sp++] = m_data[addr];
                 break;
             }
